@@ -1,0 +1,45 @@
+﻿@model CSharpApp.Models.JDeere
+@{
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/css/site.css" rel="stylesheet" type="text/css" />
+    <title>Index</title>
+</head>
+<body>
+    <h3>Edit Settings</h3>
+
+    <form action="UpdateSettings" method="post">
+        <label for="ClientId"><strong>Client Id:</strong></label><br />
+        <input placeholder="Your Client Id goes here" required size="100" type="text" id="ClientId" name="ClientId" value="@ViewBag.ClientId"><br /><br />
+        <label for="ClientSecret"><strong>ClientSecret:</strong></label><br />
+        <input placeholder="Your Client Secret goes here" required size="100" type="text" id="ClientSecret" name="ClientSecret" value="@ViewBag.ClientSecret"><br /><br />
+        <label for="AuthorizationEndpoint"><strong>Authorization Endpoint:</strong></label><br />
+        <input placeholder="Your Authorization Endpoint goes here" required size="100" type="text" id="AuthorizationEndpoint" name="AuthorizationEndpoint" value="@ViewBag.AuthorizationEndpoint"><br /><br />
+        <label for="TokenEndpoint"><strong>Token Endpoint:</strong></label><br />
+        <input placeholder="Your Token Endpoint goes here" required size="100" type="text" id="TokenEndpoint" name="TokenEndpoint" value="@ViewBag.TokenEndpoint"><br /><br />
+        <label for="AuthorizationEndpoint"><strong>Scopes:</strong></label><br />
+        <input placeholder="Your Scopes goes here" size="100" required type="text" id="Scopes" name="Scopes" value="@ViewBag.Scopes"><br /><br />
+        <label for="TokenEndpoint"><strong>API Endpoint:</strong></label><br />
+        <input placeholder="Your Token Endpoint goes here" required size="100" type="text" id="APIEndpoint" name="APIEndpoint" value="@ViewBag.APIEndpoint"><br /><br />
+        <button type="submit" class="btn-settings">Update Settings</button>
+
+    </form><br />
+
+    <form method="get" action="~/Home/">
+        <button type="submit" class="btn-back">Back</button>
+
+    </form>
+    <style type="text/css">
+        .wide {
+            width: 300px;
+        }
+    </style>
+</body>
+</html>
+
+
