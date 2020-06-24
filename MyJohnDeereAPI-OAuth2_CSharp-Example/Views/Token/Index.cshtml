@@ -1,0 +1,33 @@
+﻿@model MyJohnDeereAPI_OAuth2_CSharp_Example.Models.JDeere
+@{
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/css/site.css" rel="stylesheet" type="text/css" />
+    <title>Token</title>
+</head>
+<body>
+
+    <h3>Access Token:</h3> <br />
+    <textarea placeholder="" asp-for=@Model.Token rows="15" readonly spellcheck="false" wrap="hard" cols="102"></textarea>
+
+    <form action="~/API/" method="post" asp-antiforgery="false">
+        <br /><br />
+        <input placeholder="Your Client Id goes here" required size="100" hidden type="text" id="ClientId" name="ClientId" value="@ViewBag.ClientId">
+        <input placeholder="Your Client Secret goes here" required size="100" hidden type="text" id="ClientSecret" name="ClientSecret" value="@ViewBag.ClientSecret">
+        <input placeholder="Your Authorization Endpoint goes here" required size="100" hidden type="text" id="AuthorizationEndpoint" name="AuthorizationEndpoint" value="@ViewBag.AuthorizationEndpoint">
+        <input placeholder="Your Token Endpoint goes here" required size="100" hidden type="text" id="TokenEndpoint" name="TokenEndpoint" value="@ViewBag.TokenEndpoint">
+        <label for="TokenEndpoint"><strong>Simple API Invoke With Token:</strong></label><br />
+        <input placeholder="Your Token Endpoint goes here" required size="100" type="text" id="APIEndPoint" name="APIEndPoint" autofocus="autofocus" value="@ViewBag.APIEndPoint"><br /><br />
+        <button type="submit" class="btn-primary">Go!</button>
+
+    </form>
+
+
+</body>
+</html>
+
