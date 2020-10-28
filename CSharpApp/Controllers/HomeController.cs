@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using System;
 using System.Text;
 
-namespace CSharpApp.Controllers 
+namespace CSharpApp.Controllers
 {
     public class HomeController : Controller
     {
@@ -98,6 +98,16 @@ namespace CSharpApp.Controllers
         [Route("/call-api")]
         public async Task<IActionResult> CallAPI(string url)
         {
+            var response = await SecuredApiGetRequest(url);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseBody = await response.Content.ReadAsStringAsync();
+            var jsonResponse = JsonConvert.DeserializeObject(responseBody);
+
+            ViewBag.APIResponse = JsonConvert.SerializeObject(jsonResponse, Formatting.Indented);
+            ViewBag.Settings = _settings;
+
             return View("Index");
         }
 
@@ -117,6 +127,16 @@ namespace CSharpApp.Controllers
             var responseContent = await response.Content.ReadAsStringAsync();
             var oAuthMetadata = JsonConvert.DeserializeObject<Dictionary<string, object>>(responseContent);
             return oAuthMetadata;
+        }
+
+        private async Task<HttpResponseMessage> SecuredApiGetRequest(string url)
+        {
+            var client = new HttpClient();
+            var token = _settings.AccessToken.access_token;
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.deere.axiom.v3+json"));
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+
+            return await client.GetAsync(url);
         }
 
         public IActionResult Privacy()

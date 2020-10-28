@@ -36,6 +36,16 @@
         <input size="100" type="url" id="url" name="url" value="@ViewBag.Settings.APIURL/organizations"><br/><br/>
         <button type="submit" class="btn-primary">Go!</button>
         </form>
+
+        @if(ViewBag.APIResponse != null) {
+            <div>
+            <pre class="token">
+                <code class="language-json" >
+                    @ViewBag.APIResponse
+                </code>        
+            </pre>
+            </div>
+        }
     }
 </body>
 </html>
