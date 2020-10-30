@@ -93,6 +93,10 @@ textarea {
     border-color: #1861ac;
 }
 
+.token {
+    word-break: break-all;
+}
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {

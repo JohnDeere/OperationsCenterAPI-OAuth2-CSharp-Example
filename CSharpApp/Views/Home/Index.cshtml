@@ -28,9 +28,11 @@
     @if (ViewBag.Settings.AccessToken != null)
     {
         <div>
-            Access Token: <br/>
-            @ViewBag.Settings.AccessToken.access_token
-        </div><br/>
+            <p><strong>Access Token:</strong> <a href="/refresh-access-token">Refresh The Access Token</a></p>
+            <p class="token">@ViewBag.Settings.AccessToken.access_token</p>
+            <p><strong>Refresh Token:</strong></p>
+            <p class="token">@ViewBag.Settings.AccessToken.refresh_token</p>
+        </div>
         <form action="/call-api" method="post">
         <label for="url"><strong>Simple API Invote With Token:</strong></label><br />
         <input size="100" type="url" id="url" name="url" value="@ViewBag.Settings.APIURL/organizations"><br/><br/>

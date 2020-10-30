@@ -74,8 +74,6 @@ namespace CSharpApp.Controllers
             queryParameters.Add("code", code);
             queryParameters.Add("redirect_uri", _settings.CallbackUrl);
 
-            // string tokenUrl = QueryHelpers.AddQueryString(tokenEndpoint, queryParameters);
-
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Add("authorization", $"Basic {GetBase64EncodedClientCredentials()}");
@@ -106,6 +104,35 @@ namespace CSharpApp.Controllers
             var jsonResponse = JsonConvert.DeserializeObject(responseBody);
 
             ViewBag.APIResponse = JsonConvert.SerializeObject(jsonResponse, Formatting.Indented);
+            ViewBag.Settings = _settings;
+
+            return View("Index");
+        }
+
+        [Route("/refresh-access-token")]
+        public async Task<IActionResult> RefreshAccessToken()
+        {
+            Dictionary<string, object> oAuthMetadata = await GetOAuthMetadata(_settings.WellKnown);
+            string tokenEndpoint = oAuthMetadata["token_endpoint"].ToString();
+
+            var queryParameters = new Dictionary<string, string>();
+            queryParameters.Add("grant_type", "refresh_token");
+            queryParameters.Add("refresh_token", _settings.AccessToken.refresh_token);
+            queryParameters.Add("redirect_uri", _settings.CallbackUrl);
+
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Add("authorization", $"Basic {GetBase64EncodedClientCredentials()}");
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, tokenEndpoint)
+            {
+                Content = new FormUrlEncodedContent(queryParameters)
+            };
+
+            HttpResponseMessage response = await client.SendAsync(request);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            _settings.AccessToken = JsonConvert.DeserializeObject<Token>(responseContent);
+
             ViewBag.Settings = _settings;
 
             return View("Index");
