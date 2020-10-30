@@ -165,11 +165,6 @@ namespace CSharpApp.Controllers
 
             return await client.GetAsync(url);
         }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
     }
 }
 

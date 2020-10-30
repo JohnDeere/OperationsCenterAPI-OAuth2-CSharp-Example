@@ -10,13 +10,6 @@
         public string Scopes { get; set; }
         public string State { get; set; }
         public string APIURL { get; set; }
-
-        // TODO: Delete below
-        public string AuthorizationEndpoint { get; set; }
-        public string TokenEndpoint { get; set; }  
-        public string APIEndPoint { get; set; }
-        public string APIPath { get; set; }
-        public string Token { get; set; }
     }
 }
 
