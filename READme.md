@@ -7,7 +7,7 @@ This project gives a full native CSharp example of:
  * Edit Settings  
      
 ## Requirements  
-* ASP.NET Core (Current Version: 3.0) 
+* ASP.NET Core (Current Version: 3.1)
 * Installed NuGet Packages:
    * Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation Version="3.0.0"
    * Microsoft.Extensions.Logging.Debug Version="3.0.0" 
@@ -22,10 +22,8 @@ This project gives a full native CSharp example of:
 ## Edit Settings 
 * Once in the browser you will need a few things (Alternative option: update appsettings.json file directly) 
   * A ClientId and Secret from your application on https://developer.deere.com
-* The Auth URL and Access Token URL can be found with opening a new Postman request window and doing a GET on this URL [https://signin.johndeere.com/oauth2/aus78tnlaysMraFhC1t7/.well-known/oauth-authorization-server](https://signin.johndeere.com/oauth2/aus78tnlaysMraFhC1t7/.well-known/oauth-authorization-server)
-  * Insert Authorization Endpoints and Token Endpoints to page or add to appsettings.json directly as noted above.
- * Add Scopes  
-     * Insert scopes, for example org1 org2. Can also be found under MyJohnDeere API Documentation section within [https://developer.deere.com](https://developer.deere.com/) for each endpoint.
+* Add Scopes
+  * Insert scopes, for example org1 org2. Can also be found under MyJohnDeere API Documentation section within [https://developer.deere.com](https://developer.deere.com/) for each endpoint.
 
 ## How to start this project  
 * Clone this repository:  
