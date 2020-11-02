@@ -9,29 +9,45 @@
     <title>Index</title>
 </head>
 <body>
-    <h3>Welcome to the My John Deere API CSharp Example</h3>
-    <form method="get">
+    <h3>Welcome to the My John Deere API C# Example</h3>
+    <form action="/" method="post">
+        <label for="WellKnown"><strong>Well Known Endpoint:</strong></label><br />
+        <input placeholder="Your Well Known Endpoint goes here" size="100" type="text" id="WellKnown" name="WellKnown" value="@ViewBag.Settings.WellKnown"><br /><br />
         <label for="ClientId"><strong>Client Id:</strong></label><br />
-        <input placeholder="Your Client ID goes here" size="100" readonly type="text" id="ClientId" name="ClientId" value="@ViewBag.ClientId"><br /><br />
+        <input placeholder="Your Client ID goes here" size="100" type="text" id="ClientId" name="ClientId" value="@ViewBag.Settings.ClientId"><br /><br />
         <label for="ClientSecret"><strong>ClientSecret:</strong></label><br />
-        <input placeholder="Your Client Secret goes here" size="100" readonly type="text" id="ClientSecret" name="ClientSecret" value="@ViewBag.ClientSecret"><br /><br />
-        <label for="AuthorizationEndpoint"><strong>Authorization Endpoint:</strong></label><br />
-        <input placeholder="Your Authorization Endpoint goes here" size="100" readonly type="text" id="AuthorizationEndpoint" name="AuthorizationEndpoint" value="@ViewBag.AuthorizationEndpoint"><br /><br />
-        <label for="TokenEndpoint"><strong>Token Endpoint:</strong></label><br />
-        <input placeholder="Your Token Endpoint goes here" size="100" readonly type="text" id="TokenEndpoint" name="TokenEndpoint" value="@ViewBag.TokenEndpoint"><br /><br />
-        <label for="ClientSecret"><strong>Scopes:</strong></label><br />
-        <input placeholder="Your Scopes goes here" size="100" readonly type="text" id="Scopes" name="Scopes" value="@ViewBag.Scopes"><br />
-        <input placeholder="Your API Endpoint goes here" size="100" hidden type="text" id="APIEndpoint" name="APIEndpoint" value="@ViewBag.APIEndpoint"><br /><br />
-    </form>
-
-
-
-    <form method="get" action="~/Token/">
+        <input placeholder="Your Client Secret goes here" size="100" type="text" id="ClientSecret" name="ClientSecret" value="@ViewBag.Settings.ClientSecret"><br /><br />
+        <label for="CallbackUrl"><strong>Callback URL:</strong></label><br />
+        <input placeholder="Your Callback URL goes here" size="100" type="text" id="CallbackUrl" name="CallbackUrl" value="@ViewBag.Settings.CallbackUrl"><br /><br />
+        <label for="Scopes"><strong>Requested Scopes: (space delimited)</strong></label><br />
+        <input placeholder="Your Scopes goes here" size="100" type="text" id="Scopes" name="Scopes" value="@ViewBag.Settings.Scopes"><br /><br />
+        <label for="State"><strong>State:</strong></label><br />
+        <input placeholder="Your State goes here" size="100" type="text" id="State" name="State" value="@ViewBag.Settings.State"><br /><br />
         <button type="submit" class="btn-primary">Connect!</button>
-    </form><br />
-    <form method="get" action="~/Settings/">
-        <button type="submit" class="btn-settings">Edit Settings</button>
-    </form><br />
+    </form><br/>
+    @if (ViewBag.Settings.AccessToken != null)
+    {
+        <div>
+            <p><strong>Access Token:</strong> <a href="/refresh-access-token">Refresh The Access Token</a></p>
+            <p class="token">@ViewBag.Settings.AccessToken.access_token</p>
+            <p><strong>Refresh Token:</strong></p>
+            <p class="token">@ViewBag.Settings.AccessToken.refresh_token</p>
+        </div>
+        <form action="/call-api" method="post">
+        <label for="url"><strong>Simple API Invote With Token:</strong></label><br />
+        <input size="100" type="url" id="url" name="url" value="@ViewBag.Settings.APIURL/organizations"><br/><br/>
+        <button type="submit" class="btn-primary">Go!</button>
+        </form>
 
+        @if(ViewBag.APIResponse != null) {
+            <div>
+            <pre class="token">
+                <code class="language-json" >
+                    @ViewBag.APIResponse
+                </code>        
+            </pre>
+            </div>
+        }
+    }
 </body>
 </html>
