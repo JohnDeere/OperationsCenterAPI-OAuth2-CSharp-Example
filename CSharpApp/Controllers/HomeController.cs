@@ -27,11 +27,12 @@ namespace CSharpApp.Controllers
             _settings.ClientId = _configuration["JDeere:ClientId"];
             _settings.ClientSecret = _configuration["JDeere:ClientSecret"];
             _settings.WellKnown = _configuration["JDeere:WellKnown"];
-            _settings.CallbackUrl = _configuration["JDeere:CallbackUrl"];
+            _settings.ServerUrl = _configuration["JDeere:ServerUrl"];
+            _settings.CallbackUrl = _settings.ServerUrl + _configuration["JDeere:Callback"];
             _settings.Scopes = _configuration["JDeere:Scopes"];
             _settings.State = _configuration["JDeere:State"];
             _settings.APIURL = _configuration["JDeere:ApiUrl"];
-            
+
             ViewBag.Settings = _settings;
 
             return View();
@@ -86,6 +87,12 @@ namespace CSharpApp.Controllers
             HttpResponseMessage response = await client.SendAsync(request);
             var responseContent = await response.Content.ReadAsStringAsync();
             _settings.AccessToken = JsonConvert.DeserializeObject<Token>(responseContent);
+
+            string organizationAccessUrl = await NeedsOrganizationAccess();
+            if (organizationAccessUrl != null)
+            {
+                return Redirect(organizationAccessUrl);
+            }
 
             ViewBag.Settings = _settings;
 
@@ -164,6 +171,36 @@ namespace CSharpApp.Controllers
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
 
             return await client.GetAsync(url);
+        }
+
+        /// <summary>Check to see if the 'connections' rel is present for any organization.
+        /// If the rel is present it means the oauth application has not completed it's
+        /// access to an organization and must redirect the user to the uri provided
+        /// in the link.</summary>
+        /// <returns>A redirect uri if the <code>connections</code>
+        /// connections rel is present or <null> if no redirect is
+        /// required to finish the setup.</returns>
+        private async Task<string> NeedsOrganizationAccess()
+        {
+            var response = await SecuredApiGetRequest(_settings.APIURL + "/organizations");
+
+            response.EnsureSuccessStatusCode();
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var dynorg = JsonConvert.DeserializeObject<dynamic>(responseContent);
+
+            foreach (var organization in dynorg.values)
+            {
+                foreach (var link in organization.links)
+                {
+                    string rel = link.rel;
+                    if (rel == "connections")
+                    {
+                        string connectionsLink = link.uri;
+                        return QueryHelpers.AddQueryString(connectionsLink, "redirect_uri", _settings.ServerUrl);
+                    }
+                }
+            }
+            return null;
         }
     }
 }
